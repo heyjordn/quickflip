@@ -155,6 +155,26 @@ function App() {
         <div className="mb-8">
           <ProgressBar current={currentIndex} total={cards.length} />
         </div>
+        
+        {/* Completion Message */}
+        {currentIndex === cards.length - 1 && isFlipped && (
+          <div className="mt-8 text-center">
+            <div className="bg-green-50 border border-green-200 rounded-lg p-6">
+              <h3 className="text-lg font-semibold text-green-800 mb-2">
+                🎉 Study Session Complete!
+              </h3>
+              <p className="text-green-700 mb-4">
+                You've reviewed all {cards.length} cards. Great job!
+              </p>
+              <button
+                onClick={resetSession}
+                className="bg-green-600 hover:bg-green-700 text-white font-medium px-6 py-2 rounded-lg transition-colors"
+              >
+                Start New Session
+              </button>
+            </div>
+          </div>
+        )}
 
         {/* Flash Card */}
         <div className="mb-8">
@@ -194,26 +214,6 @@ function App() {
             <ChevronRight size={20} />
           </button>
         </div>
-
-        {/* Completion Message */}
-        {currentIndex === cards.length - 1 && isFlipped && (
-          <div className="mt-8 text-center">
-            <div className="bg-green-50 border border-green-200 rounded-lg p-6">
-              <h3 className="text-lg font-semibold text-green-800 mb-2">
-                🎉 Study Session Complete!
-              </h3>
-              <p className="text-green-700 mb-4">
-                You've reviewed all {cards.length} cards. Great job!
-              </p>
-              <button
-                onClick={resetSession}
-                className="bg-green-600 hover:bg-green-700 text-white font-medium px-6 py-2 rounded-lg transition-colors"
-              >
-                Start New Session
-              </button>
-            </div>
-          </div>
-        )}
       </div>
     </div>
   );
