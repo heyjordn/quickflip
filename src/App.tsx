@@ -155,10 +155,10 @@ function App() {
         <div className="mb-8">
           <ProgressBar current={currentIndex} total={cards.length} />
         </div>
-        
+
         {/* Completion Message */}
         {currentIndex === cards.length - 1 && isFlipped && (
-          <div className="mt-8 text-center">
+          <div className="my-8 text-center">
             <div className="bg-green-50 border border-green-200 rounded-lg p-6">
               <h3 className="text-lg font-semibold text-green-800 mb-2">
                 🎉 Study Session Complete!
