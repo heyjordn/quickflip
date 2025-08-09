@@ -12,8 +12,8 @@ Import flashcard set from any Github repo, must contain a `quickflip.json` file 
 [
 	{
 		"id": "1",
-		"question": "### Name a famous city",
-		"answer": "`Kingston, Jamaica`",
+		"question": "### What is the capital of the island of Jamaica?",
+		"answer": "`Kingston`",
 		"category": "General"
 	}
 ]
