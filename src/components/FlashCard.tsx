@@ -12,7 +12,7 @@ interface FlashCardProps {
 
 export const FlashCard: React.FC<FlashCardProps> = ({ card, isFlipped, onFlip }) => {
   return (
-    <div className="relative w-full max-w-2xl mx-auto">
+    <div className="relative w-full mx-auto">
       <div 
         className={`relative w-full h-96 cursor-pointer transition-transform duration-700 transform-style-preserve-3d ${
           isFlipped ? 'rotate-y-180' : ''
@@ -83,7 +83,7 @@ export const FlashCard: React.FC<FlashCardProps> = ({ card, isFlipped, onFlip })
             </div>
             
             <div className="flex-1 flex items-center justify-center">
-              <div className="prose prose-lg max-w-none">
+              <div className="prose prose-lg">
                 <ReactMarkdown remarkPlugins={[remarkGfm]}>
                   {card.answer}
                 </ReactMarkdown>
