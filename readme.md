@@ -9,14 +9,14 @@
 Import flashcard set from any Github repo, must contain a `quickflip.json` file with the following JSON, markdown supported.
 
 ```json
-[{
-      {
-    "id": "1",
-    "question": "### Name a famous city",
-    "answer": "`Kingston, Jamaica`",
-    "category": "General"
-  }
-}]
+[
+	{
+		"id": "1",
+		"question": "### Name a famous city",
+		"answer": "`Kingston, Jamaica`",
+		"category": "General"
+	}
+]
 ```
 
 ### Develop
