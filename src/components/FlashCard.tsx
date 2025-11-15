@@ -15,12 +15,11 @@ export const FlashCard: React.FC<FlashCardProps> = ({ card, isFlipped, onFlip })
     <div className="relative w-full mx-auto">
       <div 
         className={`relative w-full h-96 cursor-pointer transition-transform duration-700 transform-style-preserve-3d ${
-          isFlipped ? 'rotate-y-180' : ''
+          isFlipped ? 'opacity-0' : 'opacity-100'
         }`}
         onClick={onFlip}
       >
-        {/* Front of card (Question) */}
-        <div className="absolute inset-0 w-full h-full backface-hidden">
+        <div className="absolute w-full h-full">
           <div className="h-full bg-white rounded-2xl shadow-xl border border-gray-100 p-8 flex flex-col">
             <div className="flex justify-between items-center mb-6">
               <div className="flex items-center gap-2">
@@ -57,7 +56,7 @@ export const FlashCard: React.FC<FlashCardProps> = ({ card, isFlipped, onFlip })
         </div>
 
         {/* Back of card (Answer) */}
-        <div className="absolute inset-0 w-full h-full backface-hidden rotate-y-180">
+        <div className="w-full h-full">
           <div className="h-full bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl shadow-xl border border-blue-100 p-8 flex flex-col">
             <div className="flex justify-between items-center mb-6">
               <div className="flex items-center gap-2">
@@ -82,7 +81,7 @@ export const FlashCard: React.FC<FlashCardProps> = ({ card, isFlipped, onFlip })
               </button>
             </div>
             
-            <div className="flex-1 flex items-center justify-center">
+            <div className="items-center justify-center">
               <div className="prose prose-lg">
                 <ReactMarkdown remarkPlugins={[remarkGfm]}>
                   {card.answer}

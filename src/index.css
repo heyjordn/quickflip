@@ -14,23 +14,31 @@
   .rotate-y-180 {
     transform: rotateY(180deg);
   }
+
+  .opacity-0 {
+    opacity: 0;
+  }
+  .opacity-full {
+    opacity: 100;
+  }
 }
 
 /* Custom scrollbar */
 ::-webkit-scrollbar {
-  width: 6px;
+  width: 2px;
 }
 
 ::-webkit-scrollbar-track {
-  @apply bg-gray-100 rounded-full;
+  @apply bg-gray-700 rounded-br-md rounded-bl-md;
 }
 
 ::-webkit-scrollbar-thumb {
-  @apply bg-gray-300 rounded-full hover:bg-gray-400;
+  @apply bg-gray-300 rounded-br-md rounded-bl-md hover:bg-gray-400;
 }
 
-/* Prose customizations for better code blocks */
 .prose pre {
+  overflow-x: scroll;
+  @apply p-[40px] my-3;
   @apply bg-gray-900 text-gray-100 rounded-lg;
 }
 
@@ -45,4 +53,9 @@
 /* Keyboard shortcut styling */
 kbd {
   @apply font-mono text-xs;
+}
+
+/* Backgroud colour */
+body {
+  @apply from-blue-50;
 }
