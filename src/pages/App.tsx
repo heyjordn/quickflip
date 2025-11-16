@@ -12,11 +12,6 @@ function App() {
       label: "CKAD",
       imageUrl: "https://training.linuxfoundation.org/wp-content/uploads/2020/08/CKAD_badge-300x300.png",
       repository: "https://github.com/heyjordn/quickflip-ckad"
-    },
-    {
-      label: "CKS",
-      imageUrl: "https://training.linuxfoundation.org/wp-content/uploads/2024/04/CKS-300x285.png",
-      repository: "https://github.com/heyjordn/quickflip-ckad"
     }
   ]
   return (
