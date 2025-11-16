@@ -3,16 +3,22 @@ import { useSearchParams } from "react-router";
 import { DefaultLayout } from '../layouts/DefaultLayout';
 import { useNavigate } from 'react-router';
 import { parseGitHubUrl, findQuickFlipYamlFile } from '../utils/importYaml';
-import { ChevronLeft, ChevronRight, RotateCcw, Shuffle } from 'lucide-react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { ProgressBar } from '../components/ProgressBar';
-import { FlashCard } from '../components/FlashCard';
+import { FlashCard as FlashCardComponent } from '../components/FlashCard';
+import { FlashCard } from '../types';
 
 function Study(){
   const [searchParams] = useSearchParams();
   const navigator = useNavigate();
-  const [cards, setCards] = useState([""])
+  const [cards, setCards] = useState<FlashCard[]>([{
+    id: "1",
+    question: "",
+    category: "",
+    answer: ""
+  }])
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [isFlipped, setIsFlipped] = useState(false);
+  const [isRevealed, setIsRevealed] = useState(false);
   const [studyStarted, setStudyStarted] = useState(false);
 
   useEffect(() => {
@@ -33,8 +39,8 @@ function Study(){
     const {owner, repo} = parseGitHubUrl(githubUrl);
 
     findQuickFlipYamlFile(owner, repo)
-      .then((cardsFromYaml: string[]) => setCards(cardsFromYaml))
-      .catch(() => setCards([""]));
+      .then((cardsFromYaml: FlashCard[]) => setCards(cardsFromYaml))
+      .catch(() => setCards([]));
     
       return () => {};
   }, []);
@@ -46,14 +52,14 @@ function Study(){
   const nextCard = () => {
     if (currentIndex < cards.length - 1) {
       setCurrentIndex(currentIndex + 1);
-      setIsFlipped(false);
+      setIsRevealed(false);
     }
   };
 
   const prevCard = () => {
     if (currentIndex > 0) {
       setCurrentIndex(currentIndex - 1);
-      setIsFlipped(false);
+      setIsRevealed(false);
     }
   };
 
@@ -61,24 +67,22 @@ function Study(){
     const shuffled = [...cards].sort(() => Math.random() - 0.5);
     setCards(shuffled);
     setCurrentIndex(0);
-    setIsFlipped(false);
+    setIsRevealed(false);
   };
 
   const resetSession = () => {
     setCards([]);
     setCurrentIndex(0);
-    setIsFlipped(false);
+    setIsRevealed(false);
     setStudyStarted(false);
   };
 
-  const handleFlip = () => {
-    setIsFlipped(!isFlipped);
+  const handleReveal = () => {
+    setIsRevealed(!isRevealed);
   };
 
   useEffect(() => {
-    const handleKeyPress = (event: KeyboardEvent) => {
-      if (!studyStarted) return;
-      
+    const handleKeyPress = (event: KeyboardEvent) => {      
       switch (event.key) {
         case 'ArrowLeft':
           event.preventDefault();
@@ -90,7 +94,7 @@ function Study(){
           break;
         case ' ':
           event.preventDefault();
-          handleFlip();
+          handleReveal();
           break;
         case 'r':
           if (event.ctrlKey || event.metaKey) {
@@ -103,14 +107,21 @@ function Study(){
 
     window.addEventListener('keydown', handleKeyPress);
     return () => window.removeEventListener('keydown', handleKeyPress);
-  }, [currentIndex, studyStarted, isFlipped]);
+  }, [currentIndex, studyStarted, isRevealed]);
 
+    if (cards.length < 0) {
+      return (
+        <DefaultLayout>
+          <p>No Flash Cards found in this repository.</p>
+        </DefaultLayout>
+      )
+    }
     return (
         <DefaultLayout>
           <div>
             <div className="max-w-4xl mx-auto">
               {/* Header */}        
-                <div className="flex gap-2">
+                {/* <div className="flex gap-2">
                   <button
                     onClick={shuffleCards}
                     className="p-2 text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
@@ -125,16 +136,39 @@ function Study(){
                   >
                     <RotateCcw size={20} />
                   </button>
-                </div>
-              </div>
-
+                </div>*/}
+              </div> 
               {/* Progress Bar */}
               <div className="mb-8">
                 <ProgressBar current={currentIndex} total={cards.length} />
               </div>
-
+              {/* Navigation */}
+              <div className="flex justify-between items-center">
+                <button
+                  onClick={prevCard}
+                  disabled={currentIndex === 0}
+                  className="flex items-center gap-2 px-2 py-3 bg-white text-gray-700 font-medium rounded-sm  hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                >
+                  <ChevronLeft size={20} />
+                </button>
+              {/* Flash Card */}
+              <div className="relative flex-1 mb-8">
+                <FlashCardComponent 
+                  card={cards[currentIndex]}
+                  isRevealed={isRevealed}
+                  onReveal={handleReveal}
+                />
+              </div>
+                <button
+                  onClick={nextCard}
+                  disabled={currentIndex === cards.length - 1}
+                  className="flex items-center px-2 py-3 bg-white text-gray-700 font-medium rounded-sm hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                >
+                  <ChevronRight size={20} />
+                </button>
+              </div>
               {/* Completion Message */}
-              {currentIndex === cards.length - 1 && isFlipped && (
+              {currentIndex === cards.length - 1 && isRevealed && (
                 <div className="my-8 text-center">
                   <div className="bg-green-50 border border-green-200 rounded-lg p-6">
                     <h3 className="text-lg font-semibold text-green-800 mb-2">
@@ -152,45 +186,6 @@ function Study(){
                   </div>
                 </div>
               )}
-
-              {/* Flash Card */}
-              <div className="mb-8">
-                <FlashCard 
-                  card={cards[currentIndex]}
-                  isFlipped={isFlipped}
-                  onFlip={handleFlip}
-                />
-              </div>
-
-              {/* Navigation */}
-              <div className="flex justify-between items-center">
-                <button
-                  onClick={prevCard}
-                  disabled={currentIndex === 0}
-                  className="flex items-center gap-2 px-6 py-3 bg-white text-gray-700 font-medium rounded-lg shadow-sm border border-gray-200 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-                >
-                  <ChevronLeft size={20} />
-                  Previous
-                </button>
-
-                <div className="flex items-center gap-4">
-                  <button
-                    onClick={handleFlip}
-                    className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg shadow-sm transition-colors"
-                  >
-                    {isFlipped ? 'Show Question' : 'Show Answer'}
-                  </button>
-                </div>
-
-                <button
-                  onClick={nextCard}
-                  disabled={currentIndex === cards.length - 1}
-                  className="flex items-center gap-2 px-6 py-3 bg-white text-gray-700 font-medium rounded-lg shadow-sm border border-gray-200 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-                >
-                  Next
-                  <ChevronRight size={20} />
-                </button>
-              </div>
           </div>
         </DefaultLayout>
     )

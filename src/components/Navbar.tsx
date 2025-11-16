@@ -18,7 +18,7 @@ export class Navbar extends React.Component<Props> {
                 </div>
                 <div className="grid grid-cols-2 space-x-2">
                     <Link to="/about">About</Link>
-                    <a href="">Github</a>
+                    <a href="https://github.com/heyjordn/quickflip" rel="noopener noreferer" target="_blank">Github</a>
                 </div>
             </div>
         )

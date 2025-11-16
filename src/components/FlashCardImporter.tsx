@@ -1,13 +1,9 @@
 import React, { useState } from 'react';
 import { Github, AlertCircle } from 'lucide-react';
-import { FlashCardSet } from '../types';
+import { useNavigate } from 'react-router';
 
-interface FlashCardImporterProps {
-  onImport: (flashcardSet: FlashCardSet) => void;
-  onClose: () => void;
-}
-
-const FlashCardImporter: React.FC<FlashCardImporterProps> = ({ onImport, onClose }) => {
+const FlashCardImporter: React.FC = ({  }) => {
+  const navigate = useNavigate();
   const [repoUrl, setRepoUrl] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -28,12 +24,13 @@ const FlashCardImporter: React.FC<FlashCardImporterProps> = ({ onImport, onClose
     setError('');
 
     try {
-      const { owner, repo } = parseGitHubUrl(repoUrl);
-      onClose();
+      // Can we parse this url, if yes, send over to flash cards
+      parseGitHubUrl(repoUrl);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to import flashcards');
     } finally {
       setLoading(false);
+      navigate(`/study?flashcards=${repoUrl}`)
     }
   };
 
