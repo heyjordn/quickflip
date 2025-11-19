@@ -6,17 +6,18 @@
 
 ### Usage
 
-Import flashcard set from any Github repo, must contain a `quickflip.json` file with the following JSON, markdown supported.
+Import flashcard set from any Github repo, must contain a `quickflip.yaml` file with the following YAML, markdown supported.
 
-```json
-[
-	{
-		"id": "1",
-		"question": "### What is the capital of the island of Jamaica?",
-		"answer": "`Kingston`",
-		"category": "General"
-	}
-]
+```yaml
+- id: '1'
+  category: Kubernetes (CKAD) - Multi-container Pods
+  question: Create a Pod with two containers, both with image busybox and command "echo hello; sleep 3600". Connect to the second container and run 'ls'
+  answer: |
+    The easiest way to do it is create a pod with a single container and save its definition in a YAML file:
+
+    ```bash
+     kubectl run busybox --image=busybox --restart=Never -o yaml --dry-run=client -- /bin/sh -c 'echo hello;sleep 3600' > pod.yaml vi pod.yaml
+    ```
 ```
 
 ### Develop
