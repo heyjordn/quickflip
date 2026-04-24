@@ -12,7 +12,12 @@ function App() {
       label: "CKAD",
       imageUrl: "https://training.linuxfoundation.org/wp-content/uploads/2020/08/CKAD_badge-300x300.png",
       repository: "https://github.com/heyjordn/quickflip-ckad"
-    }
+    },
+    {
+      label: "Terraform Associate",
+      imageUrl: "https://dustindortch.com/wp-content/uploads/2021/01/terraform-associate-badge.png",
+      repository: "https://github.com/heyjordn/quickflip-terraform-associate"
+    },
   ]
   return (
     <DefaultLayout>
